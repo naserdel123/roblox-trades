@@ -1,0 +1,532 @@
+/* ===================================
+   المتغيرات
+   =================================== */
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #ec4899;
+    --accent: #f59e0b;
+    --success: #10b981;
+    --error: #ef4444;
+    --dark: #0f172a;
+    --darker: #020617;
+    --light: #f8fafc;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--darker);
+    color: var(--light);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ===================================
+   الخلفية
+   =================================== */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up 15s infinite;
+    box-shadow: 0 0 10px var(--primary);
+}
+
+@keyframes float-up {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+}
+
+.touch-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* ===================================
+   الصفحة
+   =================================== */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+}
+
+.login-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 450px;
+}
+
+/* ===================================
+   الشعار
+   =================================== */
+.logo-3d {
+    text-align: center;
+    margin-bottom: 2rem;
+    perspective: 1000px;
+}
+
+.roblox-logo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: logo-float 6s ease-in-out infinite;
+}
+
+.logo-cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: cube-rotate 20s linear infinite;
+}
+
+.face {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.front  { transform: translateZ(60px); }
+.back   { transform: rotateY(180deg) translateZ(60px); }
+.right  { transform: rotateY(90deg) translateZ(60px); }
+.left   { transform: rotateY(-90deg) translateZ(60px); }
+.top    { transform: rotateX(90deg) translateZ(60px); }
+.bottom { transform: rotateX(-90deg) translateZ(60px); }
+
+@keyframes cube-rotate {
+    0% { transform: rotateX(-15deg) rotateY(0deg); }
+    100% { transform: rotateX(-15deg) rotateY(360deg); }
+}
+
+@keyframes logo-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.logo-glow {
+    position: absolute;
+    inset: -20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 30px;
+    opacity: 0.3;
+    filter: blur(30px);
+    animation: glow-pulse 3s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes glow-pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* الاسم متصل */
+.site-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--light) 0%, var(--primary) 50%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+    letter-spacing: 1px;
+}
+
+/* ===================================
+   النماذج - نفس المكان بدون تحريك
+   =================================== */
+.forms-wrapper {
+    position: relative;
+    min-height: 500px;
+}
+
+.form-box {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+/* إخفاء النموذج */
+.form-box.hidden {
+    display: none;
+}
+
+/* إظهار النموذج */
+.form-box:not(.hidden) {
+    animation: fade-in 0.3s ease;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* رأس النموذج */
+.form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.form-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.form-header p {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+}
+
+/* ===================================
+   حقول الإدخال
+   =================================== */
+.input-group {
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+.input-group.floating input {
+    width: 100%;
+    padding: 1rem 3rem 0.7rem 1rem;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    color: var(--light);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-group.floating input:focus {
+    border-color: var(--primary);
+    background: rgba(255,255,255,0.1);
+}
+
+.input-group.floating label {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.5);
+    pointer-events: none;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.input-group.floating input:focus + label,
+.input-group.floating input:not(:placeholder-shown) + label {
+    top: 0;
+    right: 1rem;
+    transform: translateY(-50%) scale(0.85);
+    background: var(--dark);
+    padding: 0 0.5rem;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.input-line {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.input-group.floating input:focus ~ .input-line {
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    opacity: 0.5;
+}
+
+.toggle-password {
+    position: absolute;
+    left: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+    font-size: 1rem;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+/* ===================================
+   خيارات النموذج
+   =================================== */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    font-size: 0.85rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    color: rgba(255,255,255,0.7);
+}
+
+.remember-me input {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--glass-border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+}
+
+.remember-me input:checked + .checkmark {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.remember-me input:checked + .checkmark::after {
+    content: '✓';
+    color: white;
+}
+
+.forgot-link {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.forgot-link:hover {
+    color: var(--secondary);
+}
+
+/* ===================================
+   الأزرار
+   =================================== */
+.btn-primary {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+}
+
+.btn-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.6s;
+}
+
+.btn-primary:hover .btn-shine {
+    left: 100%;
+}
+
+.btn-glow {
+    animation: btn-glow 2s ease-in-out infinite;
+}
+
+@keyframes btn-glow {
+    0%, 100% { box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+    50% { box-shadow: 0 4px 30px rgba(99, 102, 241, 0.8); }
+}
+
+/* ===================================
+   التبديل بين النماذج
+   =================================== */
+.switch-form {
+    text-align: center;
+    margin-top: 1.2rem;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+}
+
+.switch-form a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+}
+
+.switch-form a:hover {
+    color: var(--secondary);
+}
+
+/* ===================================
+   قوة كلمة المرور
+   =================================== */
+.password-strength {
+    margin-bottom: 1rem;
+}
+
+.strength-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.strength-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--error), var(--warning), var(--success));
+    transition: width 0.3s ease;
+}
+
+.strength-text {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.3rem;
+    display: block;
+}
+
+/* ===================================
+   الإشعارات
+   =================================== */
+.notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.notification {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: slide-in 0.3s ease;
+    max-width: 350px;
+}
+
+@keyframes slide-in {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.notification.success { border-color: var(--success); }
+.notification.error { border-color: var(--error); }
+
+/* ===================================
+   Responsive
+   =================================== */
+@media (max-width: 480px) {
+    .login-page {
+        padding: 1rem;
+    }
+    
+    .site-title {
+        font-size: 2rem;
+    }
+    
+    .form-box {
+        padding: 1.5rem;
+    }
+}
