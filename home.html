@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تريدات روبلوكس</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="home-page">
+    <!-- خلفية -->
+    <div class="bg-layers">
+        <div class="bg-gradient"></div>
+        <div class="bg-grid"></div>
+        <div class="floating-shapes" id="shapes"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- شريط التنقل -->
+    <nav class="navbar glass">
+        <div class="nav-brand">
+            <div class="logo-animated">
+                <span class="logo-text">R$</span>
+                <div class="logo-ring"></div>
+            </div>
+            <div class="brand-text">
+                <span class="brand-main">تريدات روبلوكس</span>
+            </div>
+        </div>
+        
+        <div class="nav-center">
+            <div class="search-box">
+                <input type="text" placeholder="ابحث عن تريد..." id="searchInput">
+                <button class="search-btn">🔍</button>
+            </div>
+        </div>
+
+        <div class="nav-user">
+            <div class="user-info" id="userInfo">
+                <div class="user-avatar" id="userAvatar">👤</div>
+                <div class="user-details">
+                    <span class="user-name" id="currentUser">زائر</span>
+                    <span class="user-status" id="userStatus">غير مسجل</span>
+                </div>
+            </div>
+            <button class="btn-icon btn-logout" onclick="logout()" title="تسجيل الخروج">
+                <span>🚪</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="title-icon">🔥</span>
+                آخر التريدات
+            </h2>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="recent">الأحدث</button>
+                <button class="filter-btn" data-filter="popular">الأشهر</button>
+            </div>
+        </div>
+
+        <!-- شبكة التريدات -->
+        <div class="trades-grid" id="tradesGrid">
+            <!-- التريدات تنعرض هنا -->
+        </div>
+
+        <!-- حالة فارغة -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">📦</div>
+            <h3>لا توجد تريدات بعد</h3>
+            <p>كن أول من ينشر تريد!</p>
+        </div>
+    </main>
+
+    <!-- زر الزائد العائم -->
+    <button class="fab" id="fabBtn" onclick="openModal()" style="display: none;">
+        <span class="fab-icon">+</span>
+        <div class="fab-glow"></div>
+        <div class="fab-tooltip">إضافة تريد جديد</div>
+    </button>
+
+    <!-- نافذة إضافة تريد - مغلقة افتراضياً -->
+    <div class="modal-overlay" id="addTradeModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">✕</button>
+            
+            <div class="modal-header">
+                <div class="modal-icon">✨</div>
+                <h2>نشر تريد جديد</h2>
+                <p>اعرض أغراضك واختر ما تريد مقابلها</p>
+            </div>
+            
+            <form id="tradeForm" class="trade-form">
+                <!-- العنصر المعروض -->
+                <div class="trade-section">
+                    <div class="section-badge">أنا أعرض</div>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="itemImage" accept="image/*" hidden>
+                        <div class="upload-content">
+                            <span class="upload-icon">📦</span>
+                            <p>اضغط أو اسحب صورة العنصر</p>
+                            <span class="upload-hint">PNG, JPG - Max 5MB</span>
+                        </div>
+                        <img id="previewImage" class="preview-image" style="display: none;">
+                    </div>
+                    
+                    <div class="input-group floating">
+                        <input type="text" id="itemName" required placeholder=" ">
+                        <label>اسم العنصر في روبلوكس</label>
+                    </div>
+                </div>
+
+                <!-- علامة التبادل -->
+                <div class="exchange-divider">
+                    <div class="divider-line"></div>
+                    <div class="exchange-icon">⇄</div>
+                    <div class="divider-text">أريد مقابل</div>
+                    <div class="divider-line"></div>
+                </div>
+
+                <!-- المقابل المطلوب -->
+                <div class="trade-section">
+                    <div class="section-badge wanted">أنا أريد</div>
+                    
+                    <div class="upload-area small" id="tradeUploadArea">
+                        <input type="file" id="tradeImage" accept="image/*" hidden>
+                        <div class="upload-content">
+                            <span class="upload-icon">🎯</span>
+                            <p>صورة المقابل</p>
+                        </div>
+                        <img id="previewTradeImage" class="preview-image" style="display: none;">
+                    </div>
+                    
+                    <div class="input-group floating">
+                        <input type="text" id="tradeItemName" required placeholder=" ">
+                        <label>اسم المقابل المطلوب</label>
+                    </div>
+                </div>
+
+                <!-- رابط التواصل -->
+                <div class="input-group floating tiktok-group">
+                    <input type="url" id="tiktokLink" required placeholder=" ">
+                    <label>رابط حساب TikTok</label>
+                    <span class="input-badge">🎵</span>
+                </div>
+
+                <button type="submit" class="btn-primary btn-publish">
+                    <span>🚀</span>
+                    <span>نشر التريد الآن</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نموذج بطاقة التريد -->
+    <template id="tradeCardTemplate">
+        <div class="trade-card">
+            <div class="card-content">
+                <div class="item-section">
+                    <div class="item-badge">معروض</div>
+                    <div class="item-image-container">
+                        <img class="item-image" src="" alt="العنصر">
+                    </div>
+                    <h3 class="item-name"></h3>
+                    <span class="item-owner"></span>
+                </div>
+                
+                <div class="exchange-arrow">
+                    <div class="arrow-circle">⇄</div>
+                </div>
+                
+                <div class="wanted-section">
+                    <div class="wanted-badge">مطلوب</div>
+                    <div class="wanted-image-container">
+                        <img class="wanted-image" src="" alt="المقابل">
+                    </div>
+                    <h4 class="wanted-name"></h4>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <a class="tiktok-btn" target="_blank">
+                    <span>🎵</span>
+                    <span>تواصل عبر TikTok</span>
+                </a>
+                <span class="trade-time"></span>
+            </div>
+        </div>
+    </template>
+
+    <div class="notifications" id="notifications"></div>
+
+    <script src="js/app.js"></script>
+</body>
+  </html>
+  
