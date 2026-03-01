@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تريدات روبلوكس - الرئيسية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .settings-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .trades-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .trade-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            animation: slideUp 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .trade-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .trade-card:hover::before {
+            left: 100%;
+        }
+
+        .trade-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        /* قسم العناصر المتعددة */
+        .items-section {
+            margin-bottom: 20px;
+        }
+
+        .item-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .item-row img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #667eea;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-info h4 {
+            margin-bottom: 5px;
+            color: #667eea;
+        }
+
+        .item-info p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* علامة الزائد لإضافة عنصر */
+        .add-item-btn {
+            width: 100%;
+            padding: 20px;
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            color: #667eea;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .add-item-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .add-item-btn span {
+            font-size: 1rem;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 2rem;
+            color: #667eea;
+            margin: 15px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .tiktok-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, #ff0050, #00f2ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 80px 20px;
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* زر الزائد العائم */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 99;
+        }
+
+        .fab.show {
+            display: flex;
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .fab::after {
+            content: 'إضافة تريد';
+            position: absolute;
+            right: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .fab:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* النافذة المنبثقة */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 30px;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: scale(0.8);
+            transition: transform 0.3s;
+            margin: 20px 0;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            position: sticky;
+            top: 0;
+            background: inherit;
+            z-index: 10;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* قسم العناصر في النافذة */
+        .items-container {
+            margin-bottom: 20px;
+        }
+
+        .item-entry {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .item-entry .upload-small {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .item-entry .upload-small:hover {
+            border-color: #667eea;
+        }
+
+        .item-entry .upload-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .item-entry .inputs {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .item-entry input {
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            outline: none;
+        }
+
+        .item-entry input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .remove-item {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e74c3c;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .add-more-btn {
+            width: 100%;
+            padding: 15px;
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 12px;
+            background: rgba(102, 126, 234, 0.05);
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .add-more-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .exchange-divider {
+            text-align: center;
+            margin: 25px 0;
+            font-size: 1.5rem;
+            color: #667eea;
+            position: relative;
+        }
+
+        .exchange-divider::before,
+        .exchange-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        .exchange-divider::before { left: 0; }
+        .exchange-divider::after { right: 0; }
+
+        .tiktok-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tiktok-section input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* نافذة الإعدادات */
+        .settings-modal .modal-content {
+            max-width: 400px;
+        }
+
+        .settings-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .danger-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .danger-btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفية متحركة -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="settings-btn" onclick="openSettings()" title="الإعدادات">⚙️</button>
+            <h1>تريدات روبلوكس</h1>
+        </div>
+        <div class="user-info">
+            <span id="username">زائر</span>
+            <button class="logout-btn" onclick="logout()">خروج</button>
+        </div>
+    </nav>
+
+    <!-- المحتوى -->
+    <div class="main-content">
+        <div class="header">
+            <h2>🔥 آخر التريدات</h2>
+        </div>
+
+        <div class="trades-grid" id="tradesGrid"></div>
+
+        <div class="empty" id="emptyState" style="display: none;">
+            📦 لا توجد تريدات بعد<br>
+            <small>كن أول من ينشر تريد!</small>
+        </div>
+    </div>
+
+    <!-- زر الزائد -->
+    <button class="fab" id="fabBtn" onclick="openModal()">+</button>
+
+    <!-- نافذة إضافة تريد -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✨ نشر تريد جديد</h3>
+                <button class="close-btn" onclick="closeModal()">✕</button>
+            </div>
+
+            <form id="tradeForm">
+                <!-- العناصر المعروضة -->
+                <div class="section-title">
+                    📦 أنا أعرض (يمكنك إضافة أكثر من عنصر)
+                </div>
+                <div class="items-container" id="myItemsContainer">
+                    <!-- العناصر تضاف هنا -->
+                </div>
+                <button type="button" class="add-more-btn" onclick="addMyItem()">
+                    ➕ إضافة عنصر آخر
+                </button>
+
+                <div class="exchange-divider">⇄</div>
+
+                <!-- المقابل المطلوب -->
+                <div class="section-title">
+                    🎯 أنا أريد (يمكنك إضافة أكثر من عنصر)
+                </div>
+                <div class="items-container" id="wantedItemsContainer">
+                    <!-- العناصر تضاف هنا -->
+                </div>
+                <button type="button" class="add-more-btn" onclick="addWantedItem()">
+                    ➕ إضافة مقابل آخر
+                </button>
+
+                <!-- TikTok -->
+                <div class="tiktok-section">
+                    <div class="section-title">🎵 رابط التواصل</div>
+                    <input type="url" id="tiktokLink" placeholder="رابط حساب TikTok" required>
+                </div>
+
+                <button type="submit" class="btn">🚀 نشر التريد الآن</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة الإعدادات -->
+    <div class="modal settings-modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙️ الإعدادات</h3>
+                <button class="close-btn" onclick="closeSettings()">✕</button>
+            </div>
+            
+            <div class="settings-item">
+                <span>مسح جميع التريدات</span>
+                <button class="danger-btn" onclick="clearTrades()">مسح</button>
+            </div>
+            
+            <div class="settings-item">
+                <span>مسح جميع الحسابات</span>
+                <button class="danger-btn" onclick="clearAll()">مسح الكل</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // خلفية متحركة
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.
